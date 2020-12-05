@@ -1,4 +1,4 @@
-//¶¨Ê±Æ÷4¼ÆÊ±²úÉúÖĞ¶Ï
+//å®šæ—¶å™¨4è®¡æ—¶äº§ç”Ÿä¸­æ–­
 
 #include "sys.h"
 #include "time.h"
@@ -11,35 +11,33 @@ void TIM4_Int_Init(u16 arr,u16 psc)
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);  ///Ê¹ÄÜTIM3Ê±ÖÓ
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE);  ///ä½¿èƒ½TIM3æ—¶é’Ÿ
 	
-  TIM_TimeBaseInitStructure.TIM_Period = arr; 	//×Ô¶¯ÖØ×°ÔØÖµ
-	TIM_TimeBaseInitStructure.TIM_Prescaler=psc;  //¶¨Ê±Æ÷·ÖÆµ
-	TIM_TimeBaseInitStructure.TIM_CounterMode=TIM_CounterMode_Up; //ÏòÉÏ¼ÆÊıÄ£Ê½
+        TIM_TimeBaseInitStructure.TIM_Period = arr; 	//è‡ªåŠ¨é‡è£…è½½å€¼
+	TIM_TimeBaseInitStructure.TIM_Prescaler=psc;  //å®šæ—¶å™¨åˆ†é¢‘
+	TIM_TimeBaseInitStructure.TIM_CounterMode=TIM_CounterMode_Up; //å‘ä¸Šè®¡æ•°æ¨¡å¼
 	TIM_TimeBaseInitStructure.TIM_ClockDivision=TIM_CKD_DIV1; 
 	
-	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStructure);//³õÊ¼»¯TIM3
+	TIM_TimeBaseInit(TIM4,&TIM_TimeBaseInitStructure);//åˆå§‹åŒ–TIM3
 	
-	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE); //ÔÊĞí¶¨Ê±Æ÷3¸üĞÂÖĞ¶Ï
-	TIM_Cmd(TIM4,ENABLE); //Ê¹ÄÜ¶¨Ê±Æ÷3
+	TIM_ITConfig(TIM4,TIM_IT_Update,ENABLE); //å…è®¸å®šæ—¶å™¨3æ›´æ–°ä¸­æ–­
+	TIM_Cmd(TIM4,ENABLE); //ä½¿èƒ½å®šæ—¶å™¨3
 	
-	NVIC_InitStructure.NVIC_IRQChannel=TIM4_IRQn; //¶¨Ê±Æ÷3ÖĞ¶Ï
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x00; //ÇÀÕ¼ÓÅÏÈ¼¶1
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0x03; //×ÓÓÅÏÈ¼¶3
+	NVIC_InitStructure.NVIC_IRQChannel=TIM4_IRQn; //å®šæ—¶å™¨3ä¸­æ–­
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x00; //æŠ¢å ä¼˜å…ˆçº§1
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0x03; //å­ä¼˜å…ˆçº§3
 	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
-	
-	
 	
 }
 	
 	
 	
 	
-	//¶¨Ê±Æ÷3ÖĞ¶Ï·şÎñº¯Êı
+	//å®šæ—¶å™¨3ä¸­æ–­æœåŠ¡å‡½æ•°
 void TIM4_IRQHandler(void)
 {
-	if(TIM_GetITStatus(TIM4,TIM_IT_Update)==SET) //Òç³öÖĞ¶Ï
+	if(TIM_GetITStatus(TIM4,TIM_IT_Update)==SET) //æº¢å‡ºä¸­æ–­
 	{
 		if (GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_0)==1)
 		{
@@ -55,9 +53,9 @@ void TIM4_IRQHandler(void)
 			GPIO_ResetBits(GPIOC,GPIO_Pin_1);
 			flag1=0;
 			TIM_SetCompare1(TIM2,500);
-		  TIM_SetCompare1(TIM3,500);//¶æ»ú1,2¶¼×ªµ½0¶È	
+		        TIM_SetCompare1(TIM3,500);//èˆµæœº1,2éƒ½è½¬åˆ°0åº¦	
 		}
-	}TIM_ClearITPendingBit(TIM4,TIM_IT_Update);  //Çå³ıÖĞ¶Ï±êÖ¾Î»
+	}TIM_ClearITPendingBit(TIM4,TIM_IT_Update);  //æ¸…é™¤ä¸­æ–­æ ‡å¿—ä½
 }
 
 
