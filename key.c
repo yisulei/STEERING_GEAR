@@ -1,4 +1,4 @@
-//GPIOB,Pin0 ¿ØÖÆ°´¼ü
+//GPIOB,Pin0 æ§åˆ¶æŒ‰é”®
 #include "sys.h"
 #include "key.h"
 #include "delay.h"
@@ -7,14 +7,14 @@
 void KEY_Init(void)
 {
 	
-	GPIO_InitTypeDef  GPIO_InitStructure;
+  GPIO_InitTypeDef  GPIO_InitStructure;
 
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);//Ê¹ÄÜGPIOAÊ±ÖÓ
+  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);//ä½¿èƒ½GPIOAæ—¶é’Ÿ
  
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; // KEY1 ¶ÔÓ¦Òı½Å
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//ÆÕÍ¨ÊäÈëÄ£Ê½
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0; // KEY1 å¯¹åº”å¼•è„š
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;//æ™®é€šè¾“å…¥æ¨¡å¼
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100M
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//ÉÏÀ­
-  GPIO_Init(GPIOB, &GPIO_InitStructure);//³õÊ¼»¯GPIOE2,3,4
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;//ä¸Šæ‹‰
+  GPIO_Init(GPIOB, &GPIO_InitStructure);//åˆå§‹åŒ–GPIOE2,3,4
 } 
 
