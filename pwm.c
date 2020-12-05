@@ -1,4 +1,4 @@
-//¶¨Ê±Æ÷2,3¿ØÖÆ¶æ»ú½Ç¶È TIME2 CH1 GPIOA Pin0                 TIME3 CH1 GPIOA Pin6
+//å®šæ—¶å™¨2,3æ§åˆ¶èˆµæœºè§’åº¦ TIME2 CH1 GPIOA Pin0                 TIME3 CH1 GPIOA Pin6
 
 #include "sys.h"
 #include "pwm.h"
@@ -6,74 +6,69 @@
 
 void TIM2_PWM_Init(u32 arr,u32 psc)
 {		 					 
-	//´Ë²¿·ÖĞèÊÖ¶¯ĞŞ¸ÄIO¿ÚÉèÖÃ
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
-	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);  	//TIM14Ê±ÖÓÊ¹ÄÜ    	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 	//Ê¹ÄÜPORTFÊ±ÖÓ	
-	
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource0,GPIO_AF_TIM2); //¸´ÓÃ
-	//GPIO_PinAFConfig(GPIOA,GPIO_PinSource1,GPIO_AF_TIM2);
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);  	//TIM14æ—¶é’Ÿä½¿èƒ½    	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 	//ä½¿èƒ½PORTFæ—¶é’Ÿ	
+
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource0,GPIO_AF_TIM2); //å¤ç”¨
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;           
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;        //¸´ÓÃ¹¦ÄÜ
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;        //å¤ç”¨åŠŸèƒ½
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;      //ÍÆÍì¸´ÓÃÊä³ö
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;        //ÉÏÀ­
-	GPIO_Init(GPIOA,&GPIO_InitStructure);              //³õÊ¼»¯
-	  
-	TIM_TimeBaseStructure.TIM_Prescaler=psc;  //¶¨Ê±Æ÷·ÖÆµ
-	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //ÏòÉÏ¼ÆÊıÄ£Ê½
-	TIM_TimeBaseStructure.TIM_Period=arr;   //×Ô¶¯ÖØ×°ÔØÖµ
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;      //æ¨æŒ½å¤ç”¨è¾“å‡º
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;        //ä¸Šæ‹‰
+	GPIO_Init(GPIOA,&GPIO_InitStructure);              //åˆå§‹åŒ–
+
+	TIM_TimeBaseStructure.TIM_Prescaler=psc;  //å®šæ—¶å™¨åˆ†é¢‘
+	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //å‘ä¸Šè®¡æ•°æ¨¡å¼
+	TIM_TimeBaseStructure.TIM_Period=arr;   //è‡ªåŠ¨é‡è£…è½½å€¼
 	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1; 
-	
-	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);//³õÊ¼»¯¶¨Ê±Æ÷
-	//³õÊ¼»¯PWMÄ£Ê½	 
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //Ñ¡Ôñ¶¨Ê±Æ÷Ä£Ê½:TIMÂö³å¿í¶Èµ÷ÖÆÄ£Ê½1
- 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //±È½ÏÊä³öÊ¹ÄÜ
+
+	TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);//åˆå§‹åŒ–å®šæ—¶å™¨
+	//åˆå§‹åŒ–PWMæ¨¡å¼	 
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //é€‰æ‹©å®šæ—¶å™¨æ¨¡å¼:TIMè„‰å†²å®½åº¦è°ƒåˆ¶æ¨¡å¼1
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //æ¯”è¾ƒè¾“å‡ºä½¿èƒ½
 	TIM_OCInitStructure.TIM_Pulse = 0;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //Êä³ö¼«ĞÔ:TIMÊä³ö±È½Ï¼«ĞÔµÍ
-	TIM_OC1Init(TIM2, &TIM_OCInitStructure);  //¸ù¾İTÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯ÍâÉèTIM1 4OC1
-	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);  //Ê¹ÄÜTIM14ÔÚCCR1ÉÏµÄÔ¤×°ÔØ¼Ä´æÆ÷
-  TIM_ARRPreloadConfig(TIM2,ENABLE);//ARPEÊ¹ÄÜ 
-	TIM_Cmd(TIM2, ENABLE);  //Ê¹ÄÜTIM2
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //è¾“å‡ºææ€§:TIMè¾“å‡ºæ¯”è¾ƒææ€§ä½
+	TIM_OC1Init(TIM2, &TIM_OCInitStructure);  //æ ¹æ®TæŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–å¤–è®¾TIM1 4OC1
+	TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);  //ä½¿èƒ½TIM14åœ¨CCR1ä¸Šçš„é¢„è£…è½½å¯„å­˜å™¨
+	TIM_ARRPreloadConfig(TIM2,ENABLE);//ARPEä½¿èƒ½ 
+	TIM_Cmd(TIM2, ENABLE);  //ä½¿èƒ½TIM2
 }  
 
 void TIM3_PWM_Init(u32 arr,u32 psc)
 {		 					 
-	//´Ë²¿·ÖĞèÊÖ¶¯ĞŞ¸ÄIO¿ÚÉèÖÃ
-	
 	GPIO_InitTypeDef GPIO_InitStructure;
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 	TIM_OCInitTypeDef  TIM_OCInitStructure;
 	
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);  	//TIM14Ê±ÖÓÊ¹ÄÜ    	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 	//Ê¹ÄÜPORTFÊ±ÖÓ	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);  	//TIM14æ—¶é’Ÿä½¿èƒ½    	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE); 	//ä½¿èƒ½PORTFæ—¶é’Ÿ	
 	
-	GPIO_PinAFConfig(GPIOA,GPIO_PinSource6,GPIO_AF_TIM3); //¸´ÓÃ
-	//GPIO_PinAFConfig(GPIOA,GPIO_PinSource1,GPIO_AF_TIM2);
+	GPIO_PinAFConfig(GPIOA,GPIO_PinSource6,GPIO_AF_TIM3); //å¤ç”¨
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;           
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;        //¸´ÓÃ¹¦ÄÜ
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;        //å¤ç”¨åŠŸèƒ½
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	
-	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;      //ÍÆÍì¸´ÓÃÊä³ö
-	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;        //ÉÏÀ­
-	GPIO_Init(GPIOA,&GPIO_InitStructure);              //³õÊ¼»¯
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;      //æ¨æŒ½å¤ç”¨è¾“å‡º
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;        //ä¸Šæ‹‰
+	GPIO_Init(GPIOA,&GPIO_InitStructure);              //åˆå§‹åŒ–
 	  
-	TIM_TimeBaseStructure.TIM_Prescaler=psc;  //¶¨Ê±Æ÷·ÖÆµ
-	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //ÏòÉÏ¼ÆÊıÄ£Ê½
-	TIM_TimeBaseStructure.TIM_Period=arr;   //×Ô¶¯ÖØ×°ÔØÖµ
+	TIM_TimeBaseStructure.TIM_Prescaler=psc;  //å®šæ—¶å™¨åˆ†é¢‘
+	TIM_TimeBaseStructure.TIM_CounterMode=TIM_CounterMode_Up; //å‘ä¸Šè®¡æ•°æ¨¡å¼
+	TIM_TimeBaseStructure.TIM_Period=arr;   //è‡ªåŠ¨é‡è£…è½½å€¼
 	TIM_TimeBaseStructure.TIM_ClockDivision=TIM_CKD_DIV1; 
 	
-	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);//³õÊ¼»¯¶¨Ê±Æ÷14
-	//³õÊ¼»¯PWMÄ£Ê½	 
-	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //Ñ¡Ôñ¶¨Ê±Æ÷Ä£Ê½:TIMÂö³å¿í¶Èµ÷ÖÆÄ£Ê½2
- 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //±È½ÏÊä³öÊ¹ÄÜ
+	TIM_TimeBaseInit(TIM3,&TIM_TimeBaseStructure);//åˆå§‹åŒ–å®šæ—¶å™¨14
+	//åˆå§‹åŒ–PWMæ¨¡å¼	 
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1; //é€‰æ‹©å®šæ—¶å™¨æ¨¡å¼:TIMè„‰å†²å®½åº¦è°ƒåˆ¶æ¨¡å¼2
+ 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable; //æ¯”è¾ƒè¾“å‡ºä½¿èƒ½
 	TIM_OCInitStructure.TIM_Pulse = 0;
-	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //Êä³ö¼«ĞÔ:TIMÊä³ö±È½Ï¼«ĞÔµÍ
-	TIM_OC1Init(TIM3, &TIM_OCInitStructure);  //¸ù¾İTÖ¸¶¨µÄ²ÎÊı³õÊ¼»¯ÍâÉèTIM1 4OC1
-	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);  //Ê¹ÄÜTIM14ÔÚCCR1ÉÏµÄÔ¤×°ÔØ¼Ä´æÆ÷
-  TIM_ARRPreloadConfig(TIM3,ENABLE);//ARPEÊ¹ÄÜ 
-	TIM_Cmd(TIM3, ENABLE);  //Ê¹ÄÜTIM2
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High; //è¾“å‡ºææ€§:TIMè¾“å‡ºæ¯”è¾ƒææ€§ä½
+	TIM_OC1Init(TIM3, &TIM_OCInitStructure);  //æ ¹æ®TæŒ‡å®šçš„å‚æ•°åˆå§‹åŒ–å¤–è®¾TIM1 4OC1
+	TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Enable);  //ä½¿èƒ½TIM14åœ¨CCR1ä¸Šçš„é¢„è£…è½½å¯„å­˜å™¨
+        TIM_ARRPreloadConfig(TIM3,ENABLE);//ARPEä½¿èƒ½ 
+	TIM_Cmd(TIM3, ENABLE);  //ä½¿èƒ½TIM2
 }  
